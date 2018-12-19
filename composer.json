@@ -1,0 +1,13 @@
+{
+    "name": "healthengine/laravel-logstash",
+    "description": "Logstash logging stack for Laravel",
+    "keywords": ["laravel", "logstash", "monolog", "elasticsearch", "kibana", "logging"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jarryd Tilbrook",
+            "email": "jrad.tilbrook@gmail.com"
+        }
+    ]
+}
