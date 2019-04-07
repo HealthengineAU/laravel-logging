@@ -1,0 +1,146 @@
+<?php
+
+namespace HealthEngine\LaravelLogging\Tests;
+
+use HealthEngine\LaravelLogging\Processors\BuildTagProcessor;
+use HealthEngine\LaravelLogging\ServiceProvider;
+use HealthEngine\LaravelLogging\Taps\LogstashTap;
+use HealthEngine\LaravelLogging\Taps\ProcessorTap;
+use Illuminate\Queue\Events\Looping;
+use Illuminate\Support\Facades\Log;
+use Monolog\Formatter\LogstashFormatter;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
+use Monolog\Processor\MemoryPeakUsageProcessor;
+use Monolog\Processor\MemoryUsageProcessor;
+use Monolog\Processor\UidProcessor;
+use Monolog\Processor\WebProcessor;
+use Orchestra\Testbench\TestCase;
+
+class LoggingTest extends TestCase
+{
+    public function testUidResetsWhenLooping()
+    {
+        // configure a test logger
+        $handler = new TestHandler();
+        $logger = new Logger('testing', [$handler]);
+        $logger->pushProcessor(new UidProcessor());
+        Log::swap($logger);
+
+        // log something before the queue reset event
+        Log::info('before');
+        event(new Looping('connection', 'queue'));
+
+        // and log something after
+        Log::info('after');
+
+        // then assert that the uid values are not the same
+        $records = $handler->getRecords();
+        $this->assertNotEquals($records[0]['extra']['uid'], $records[1]['extra']['uid']);
+    }
+
+    public function testBuildTagIncluded()
+    {
+        // configure a test logger
+        $handler = new TestHandler();
+        $logger = new Logger('testing', [$handler]);
+        $logger->pushProcessor(new BuildTagProcessor());
+        Log::swap($logger);
+        // add the configuration property for build tag
+        config(['app.build_tag' => 42]);
+
+        // log something
+        Log::info('testing');
+
+        // then assert that the build tag is present
+        $records = $handler->getRecords();
+        $this->assertEquals(42, $records[0]['extra']['build_tag']);
+    }
+
+    public function testBuildTagNotIncluded()
+    {
+        // configure a test logger
+        $handler = new TestHandler();
+        $logger = new Logger('testing', [$handler]);
+        $logger->pushProcessor(new BuildTagProcessor());
+        Log::swap($logger);
+
+        // log something
+        Log::info('testing');
+
+        // then assert that the build tag is not present
+        $records = $handler->getRecords();
+        $this->assertArrayNotHasKey('build_tag', $records[0]['extra']);
+    }
+
+    public function testLogstashTap()
+    {
+        // configure a test logger
+        $handler = new TestHandler();
+        $logger = new Logger('testing', [$handler]);
+        // run the logger through the LogstashTap
+        (new LogstashTap())($logger);
+        Log::swap($logger);
+
+        // log something
+        Log::info('testing');
+
+        $records = $handler->getRecords();
+        $decoded = json_decode($records[0]['formatted']);
+        // assert there was no decoding error and we got an object back
+        $this->assertEquals(JSON_ERROR_NONE, json_last_error());
+        $this->assertTrue(is_object($decoded));
+    }
+
+    public function testProcessorTap()
+    {
+        // configure a test logger
+        $handler = new TestHandler();
+        $logger = new Logger('testing', [$handler]);
+        // run the logger through the ProcessorTap
+        (new ProcessorTap())($logger);
+        Log::swap($logger);
+
+        // log something
+        Log::info('testing');
+
+        // assert the log value contains the extra keys
+        $record = $handler->getRecords()[0]['extra'];
+        $this->assertArrayHasKey('memory_peak_usage', $record);
+        $this->assertArrayHasKey('memory_usage', $record);
+        $this->assertArrayHasKey('uid', $record);
+    }
+
+    public function testLogstashChannel()
+    {
+        $logger = Log::channel('logstash');
+        $handler = $logger->getHandlers()[0];
+        $formatter = $handler->getFormatter();
+        $processors = $logger->getProcessors();
+
+        // assert the logger has the logstash formatter
+        $this->assertInstanceOf(LogstashFormatter::class, $formatter);
+        $this->assertEquals(storage_path('logs/app.log'), $handler->getUrl());
+        // crude assertion that the correct processors are attached
+        $this->assertCount(5, $processors);
+    }
+
+    public function testStdoutChannel()
+    {
+        $logger = Log::channel('stdout');
+        $handler = $logger->getHandlers()[0];
+        $formatter = $handler->getFormatter();
+        $processors = $logger->getProcessors();
+
+        // assert the logger has the logstash formatter
+        $this->assertInstanceOf(LogstashFormatter::class, $formatter);
+        $this->assertEquals('php://stdout', $handler->getUrl());
+        // crude assertion that the correct processors are attached
+        $this->assertCount(5, $processors);
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return [ServiceProvider::class];
+    }
+}
