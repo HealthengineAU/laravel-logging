@@ -1,7 +1,7 @@
 {
-    "name": "healthengine/laravel-logstash",
-    "description": "Logstash logging stack for Laravel",
-    "keywords": ["laravel", "logstash", "monolog", "elasticsearch", "kibana", "logging"],
+    "name": "healthengine/laravel-logging",
+    "description": "logging stack for Laravel",
+    "keywords": ["laravel", "logging", "monolog", "logstash", "elasticsearch", "kibana"],
     "type": "library",
     "license": "MIT",
     "authors": [
