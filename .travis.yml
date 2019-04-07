@@ -1,0 +1,23 @@
+language: php
+
+php:
+  - 7.2
+  - 7.3
+  # - nightly
+
+cache:
+  directories:
+    - $HOME/.composer
+
+before_script:
+  - composer install -n
+
+script:
+  - composer phpunit
+
+after_success:
+  - travis_retry composer require php-coveralls/php-coveralls
+  - travis_retry php vendor/bin/php-coveralls -v
+
+notifications:
+  email: false
