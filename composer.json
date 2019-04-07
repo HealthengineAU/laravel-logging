@@ -9,5 +9,33 @@
             "name": "Jarryd Tilbrook",
             "email": "jrad.tilbrook@gmail.com"
         }
-    ]
+    ],
+    "require": {
+        "illuminate/log": "~5.7",
+        "illuminate/support": "~5.7",
+        "monolog/monolog": "~1.10"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "HealthEngine\\LaravelLogging\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HealthEngine\\LaravelLogging\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "phpunit": "@php vendor/bin/phpunit --colors=always"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "HealthEngine\\LaravelLogging\\ServiceProvider"
+            ]
+        }
+    }
 }
