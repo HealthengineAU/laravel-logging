@@ -2,6 +2,7 @@
 
 namespace HealthEngine\LaravelLogging\Taps;
 
+use HealthEngine\LaravelLogging\Processors\BuildTagProcessor;
 use Monolog\Processor\MemoryPeakUsageProcessor;
 use Monolog\Processor\MemoryUsageProcessor;
 use Monolog\Processor\UidProcessor;
