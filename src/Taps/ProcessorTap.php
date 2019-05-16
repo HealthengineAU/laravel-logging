@@ -24,7 +24,16 @@ class ProcessorTap
             ->pushProcessor(new MemoryUsageProcessor(true, false))
             ->pushProcessor(new UidProcessor())
             ->pushProcessor(
-                new WebProcessor(null, ['ip' => 'HTTP_X_FORWARDED_FOR', 'unique_id' => 'HTTP_X_AMZN_TRACE_ID'])
+                new WebProcessor(
+                    null,
+                    [
+                        'http_method' => 'REQUEST_METHOD',
+                        'ip' => 'HTTP_X_FORWARDED_FOR',
+                        'referrer' => 'HTTP_REFERER',
+                        'server' => 'SERVER_NAME',
+                        'unique_id' => 'HTTP_X_AMZN_TRACE_ID',
+                        'url' => 'REQUEST_URI',
+                    ])
             );
     }
 }
