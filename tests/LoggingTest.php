@@ -3,6 +3,7 @@
 namespace HealthEngine\LaravelLogging\Tests;
 
 use HealthEngine\LaravelLogging\Processors\BuildTagProcessor;
+use HealthEngine\LaravelLogging\Processors\UrlPatternProcessor;
 use HealthEngine\LaravelLogging\ServiceProvider;
 use HealthEngine\LaravelLogging\Taps\LogstashTap;
 use HealthEngine\LaravelLogging\Taps\ProcessorTap;
@@ -11,10 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Monolog\Formatter\LogstashFormatter;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
-use Monolog\Processor\MemoryPeakUsageProcessor;
-use Monolog\Processor\MemoryUsageProcessor;
 use Monolog\Processor\UidProcessor;
-use Monolog\Processor\WebProcessor;
 use Orchestra\Testbench\TestCase;
 
 class LoggingTest extends TestCase
@@ -73,6 +71,38 @@ class LoggingTest extends TestCase
         $this->assertArrayNotHasKey('build_tag', $records[0]['extra']);
     }
 
+    public function testUrlPatternIncluded()
+    {
+        // configure a test logger
+        $handler = new TestHandler();
+        $logger = new Logger('testing', [$handler]);
+        $logger->pushProcessor(new UrlPatternProcessor());
+        Log::swap($logger);
+
+        // log something
+        Log::info('testing');
+
+        // then assert that the build tag is present
+        $records = $handler->getRecords();
+        $this->assertEquals('', $records[0]['extra']['url_pattern']);
+    }
+
+    public function testUrlPatternNotIncluded()
+    {
+        // configure a test logger
+        $handler = new TestHandler();
+        $logger = new Logger('testing', [$handler]);
+        $logger->pushProcessor(new UrlPatternProcessor());
+        Log::swap($logger);
+
+        // log something
+        Log::info('testing');
+
+        // then assert that the build tag is present
+        $records = $handler->getRecords();
+        $this->assertArrayNotHasKey('url_pattern', $records[0]['extra']);
+    }
+
     public function testLogstashTap()
     {
         // configure a test logger
@@ -122,7 +152,7 @@ class LoggingTest extends TestCase
         $this->assertInstanceOf(LogstashFormatter::class, $formatter);
         $this->assertEquals(storage_path('logs/app.log'), $handler->getUrl());
         // crude assertion that the correct processors are attached
-        $this->assertCount(5, $processors);
+        $this->assertCount(6, $processors);
     }
 
     public function testStdoutChannel()
@@ -136,7 +166,7 @@ class LoggingTest extends TestCase
         $this->assertInstanceOf(LogstashFormatter::class, $formatter);
         $this->assertEquals('php://stdout', $handler->getUrl());
         // crude assertion that the correct processors are attached
-        $this->assertCount(5, $processors);
+        $this->assertCount(6, $processors);
     }
 
     protected function getPackageProviders($app)
