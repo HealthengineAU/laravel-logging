@@ -82,7 +82,7 @@ class LoggingTest extends TestCase
         // log something
         Log::info('testing');
 
-        // then assert that the build tag is present
+        // then assert that the url is included
         $records = $handler->getRecords();
         $this->assertEquals('', $records[0]['extra']['url_pattern']);
     }
@@ -98,7 +98,7 @@ class LoggingTest extends TestCase
         // log something
         Log::info('testing');
 
-        // then assert that the build tag is present
+        // then assert that the url is not included
         $records = $handler->getRecords();
         $this->assertArrayNotHasKey('url_pattern', $records[0]['extra']);
     }

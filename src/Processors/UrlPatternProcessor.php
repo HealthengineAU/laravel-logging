@@ -17,7 +17,7 @@ class UrlPatternProcessor implements ProcessorInterface
 
         // add the patterned url to the log context
         if (filled($uri)) {
-            $records['extra']['url_pattern'] = optional(app('router')->getCurrentRoute())->uri();
+            $records['extra']['url_pattern'] = $uri;
         }
 
         return $records;
