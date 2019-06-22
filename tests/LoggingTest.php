@@ -79,12 +79,16 @@ class LoggingTest extends TestCase
         $logger->pushProcessor(new UrlPatternProcessor());
         Log::swap($logger);
 
-        // log something
-        Log::info('testing');
+        // register a route that will log something
+        $this->app->get('router')->get('api/{binding}', function ($binding) {
+            Log::info('testing');
+        });
+        // make the request
+        $this->get('api/bound');
 
         // then assert that the url is included
         $records = $handler->getRecords();
-        $this->assertEquals('', $records[0]['extra']['url_pattern']);
+        $this->assertEquals('api/{binding}', $records[0]['extra']['url_pattern']);
     }
 
     public function testUrlPatternNotIncluded()
