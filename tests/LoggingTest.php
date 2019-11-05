@@ -21,6 +21,7 @@ class LoggingTest extends TestCase
     {
         // configure a test logger
         $handler = new TestHandler();
+        $handler->setSkipReset(true);
         $logger = new Logger('testing', [$handler]);
         $logger->pushProcessor(new UidProcessor());
         Log::swap($logger);
