@@ -24,7 +24,7 @@ class MonitorRequest
     {
         $response = $next($request);
 
-        $this->logger->info('Response received', ['http_status_code' => $response->status()]);
+        $this->logger->info('Response received', ['http_status_code' => $response->getStatusCode()]);
 
         return $response;
     }
