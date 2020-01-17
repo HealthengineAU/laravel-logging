@@ -21,6 +21,8 @@ It includes the following processors to enrich logs with extra data:
   current request URI, request method and client IP to a log record,
 - [BuildTagProcessor](https://github.com/HealthEngineAU/laravel-logging/blob/master/src/Processors/BuildTagProcessor.php)
   which is designed for use in docker and will add the image tag to the logs.
+- [IntrospectionProcessor](https://github.com/Seldaek/monolog/blob/master/src/Monolog/Processor/IntrospectionProcessor.php) which adds the
+  file, class, function and line where the log was triggered.
 
 ## Usage
 
