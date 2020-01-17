@@ -157,7 +157,7 @@ class LoggingTest extends TestCase
         $this->assertInstanceOf(LogstashFormatter::class, $formatter);
         $this->assertEquals(storage_path('logs/app.log'), $handler->getUrl());
         // crude assertion that the correct processors are attached
-        $this->assertCount(6, $processors);
+        $this->assertCount(7, $processors);
     }
 
     public function testStdoutChannel()
@@ -171,7 +171,7 @@ class LoggingTest extends TestCase
         $this->assertInstanceOf(LogstashFormatter::class, $formatter);
         $this->assertEquals('php://stdout', $handler->getUrl());
         // crude assertion that the correct processors are attached
-        $this->assertCount(6, $processors);
+        $this->assertCount(7, $processors);
     }
 
     protected function getPackageProviders($app)
