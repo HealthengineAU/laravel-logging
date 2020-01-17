@@ -4,6 +4,8 @@ namespace HealthEngine\LaravelLogging\Taps;
 
 use HealthEngine\LaravelLogging\Processors\BuildTagProcessor;
 use HealthEngine\LaravelLogging\Processors\UrlPatternProcessor;
+use Monolog\Logger as MonoLogger;
+use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\MemoryPeakUsageProcessor;
 use Monolog\Processor\MemoryUsageProcessor;
 use Monolog\Processor\UidProcessor;
@@ -25,6 +27,7 @@ class ProcessorTap
             ->pushProcessor(new MemoryUsageProcessor(true, false))
             ->pushProcessor(new UidProcessor())
             ->pushProcessor(new UrlPatternProcessor())
+            ->pushProcessor(new IntrospectionProcessor(MonoLogger::DEBUG, ['Illuminate\\']))
             ->pushProcessor(
                 new WebProcessor(
                     null,
