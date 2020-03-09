@@ -11,9 +11,9 @@
         }
     ],
     "require": {
-        "illuminate/log": "~5.7|~6.0",
-        "illuminate/queue": "~5.7|~6.0",
-        "illuminate/support": "~5.7|~6.0",
+        "illuminate/log": "~5.7|~6.0|~7.0",
+        "illuminate/queue": "~5.7|~6.0|~7.0",
+        "illuminate/support": "~5.7|~6.0|~7.0",
         "monolog/monolog": "~1.10"
     },
     "require-dev": {
