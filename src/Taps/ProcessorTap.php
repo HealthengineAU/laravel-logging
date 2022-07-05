@@ -1,9 +1,9 @@
 <?php
 
-namespace HealthEngine\LaravelLogging\Taps;
+namespace Healthengine\LaravelLogging\Taps;
 
-use HealthEngine\LaravelLogging\Processors\BuildTagProcessor;
-use HealthEngine\LaravelLogging\Processors\UrlPatternProcessor;
+use Healthengine\LaravelLogging\Processors\BuildTagProcessor;
+use Healthengine\LaravelLogging\Processors\UrlPatternProcessor;
 use Monolog\Logger as MonoLogger;
 use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\MemoryPeakUsageProcessor;

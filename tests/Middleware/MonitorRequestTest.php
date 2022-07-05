@@ -1,14 +1,17 @@
 <?php
 
-namespace HealthEngine\LaravelLogging\Tests\Middleware;
+namespace Healthengine\LaravelLogging\Tests\Middleware;
 
-use HealthEngine\LaravelLogging\Middleware\MonitorRequest;
+use Healthengine\LaravelLogging\Middleware\MonitorRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Healthengine\LaravelLogging\Middleware\MonitorRequest
+ */
 class MonitorRequestTest extends TestCase
 {
     public function testMiddleware()
