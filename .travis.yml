@@ -8,16 +8,14 @@ cache:
   directories:
     - $HOME/.composer
 
-notifications:
-  email: false
+before_script:
+  - composer install
+
+script:
+  - vendor/bin/phpunit --no-coverage
 
 jobs:
   include:
-    - stage: test
-      before_script:
-        - composer install
-      script:
-        - vendor/bin/phpunit --no-coverage
     - stage: coverage
       php: 8.0
       before_script:
@@ -27,3 +25,6 @@ jobs:
       after_success:
         - travis_retry composer require php-coveralls/php-coveralls
         - travis_retry php vendor/bin/php-coveralls -v
+
+notifications:
+  email: false
