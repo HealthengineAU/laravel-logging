@@ -9,7 +9,7 @@ cache:
     - $HOME/.composer
 
 before_script:
-  - composer install
+  - composer update
 
 script:
   - vendor/bin/phpunit --no-coverage
@@ -18,12 +18,14 @@ jobs:
   include:
     - stage: coverage
       php: 8.0
+      env:
+        - XDEBUG_MODE=coverage
       before_script:
-        - composer install
+        - composer update
       script:
         - composer phpunit
       after_success:
-        - travis_retry composer require php-coveralls/php-coveralls
+        - travis_retry composer require -W php-coveralls/php-coveralls
         - travis_retry php vendor/bin/php-coveralls -v
 
 notifications:
