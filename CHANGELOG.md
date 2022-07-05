@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added `stderr` channel definition. This differs from the Laravel version of it by adding this library's taps to it.
+- Added `logstash_stderr` channel definition. This differs from the Laravel version of it by adding this library's taps to it.
 - Started testing this library against PHP 8.0 in Travis CI.
 
 ### Changed
@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Supported versions of `illuminate/queue` has been changed to `^7.0 || ^8.0 || ^9.0`.
 - Supported versions of `illuminate/support` has been changed to `^7.0 || ^8.0 || ^9.0`.
 - Log channel `stdout` logging level can be configured with `LOG_LEVEL` environment variable.
+- Renamed log channel `stdout` to `logstash_stdout`.
+- Renamed log channel `logstash` to `logstash_single`.
 
 ### Removed
 

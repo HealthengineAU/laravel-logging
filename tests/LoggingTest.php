@@ -153,9 +153,9 @@ class LoggingTest extends TestCase
         $this->assertArrayHasKey('uid', $record);
     }
 
-    public function testLogstashChannel()
+    public function testLogstashSingleChannel()
     {
-        $logger = Log::channel('logstash');
+        $logger = Log::channel('logstash_single');
         $handler = $logger->getHandlers()[0];
         $formatter = $handler->getFormatter();
         $processors = $logger->getProcessors();
@@ -167,9 +167,23 @@ class LoggingTest extends TestCase
         $this->assertCount(7, $processors);
     }
 
-    public function testStdoutChannel()
+    public function testLogstashStderrChannel()
     {
-        $logger = Log::channel('stdout');
+        $logger = Log::channel('logstash_stderr');
+        $handler = $logger->getHandlers()[0];
+        $formatter = $handler->getFormatter();
+        $processors = $logger->getProcessors();
+
+        // assert the logger has the logstash formatter
+        $this->assertInstanceOf(LogstashFormatter::class, $formatter);
+        $this->assertEquals('php://stderr', $handler->getUrl());
+        // crude assertion that the correct processors are attached
+        $this->assertCount(7, $processors);
+    }
+
+    public function testLogstashStdoutChannel()
+    {
+        $logger = Log::channel('logstash_stdout');
         $handler = $logger->getHandlers()[0];
         $formatter = $handler->getFormatter();
         $processors = $logger->getProcessors();

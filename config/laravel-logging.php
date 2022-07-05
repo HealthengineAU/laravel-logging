@@ -4,34 +4,38 @@ use Healthengine\LaravelLogging\Taps\LogstashTap;
 use Healthengine\LaravelLogging\Taps\ProcessorTap;
 use Monolog\Handler\StreamHandler;
 
-$taps = [
-    LogstashTap::class,
-    ProcessorTap::class,
-];
-
 return [
-    'logstash' => [
+    'logstash_single' => [
         'driver' => 'single',
         'path' => storage_path('logs/laravel.log'),
         'level' => env('LOG_LEVEL', 'debug'),
-        'tap' => $taps,
+        'tap' => [
+            LogstashTap::class,
+            ProcessorTap::class,
+        ],
     ],
 
-    'stderr' => [
+    'logstash_stderr' => [
         'driver' => 'monolog',
         'handler' => StreamHandler::class,
         'level' => env('LOG_LEVEL', 'debug'),
-        'tap' => $taps,
+        'tap' => [
+            LogstashTap::class,
+            ProcessorTap::class,
+        ],
         'with' => [
             'stream' => 'php://stderr',
         ],
     ],
 
-    'stdout' => [
+    'logstash_stdout' => [
         'driver' => 'monolog',
         'handler' => StreamHandler::class,
         'level' => env('LOG_LEVEL', 'debug'),
-        'tap' => $taps,
+        'tap' => [
+            LogstashTap::class,
+            ProcessorTap::class,
+        ],
         'with' => [
             'stream' => 'php://stdout',
         ],
