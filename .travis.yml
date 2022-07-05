@@ -8,15 +8,22 @@ cache:
   directories:
     - $HOME/.composer
 
-before_script:
-  - composer install -n
-
-script:
-  - composer phpunit
-
-after_success:
-  - travis_retry composer require php-coveralls/php-coveralls
-  - travis_retry php vendor/bin/php-coveralls -v
-
 notifications:
   email: false
+
+jobs:
+  include:
+    - stage: test
+      before_script:
+        - composer install
+      script:
+        - vendor/bin/phpunit --no-coverage
+    - stage: coverage
+      php: 8.0
+      before_script:
+        - composer install
+      script:
+        - composer phpunit
+      after_success:
+        - travis_retry composer require php-coveralls/php-coveralls
+        - travis_retry php vendor/bin/php-coveralls -v
