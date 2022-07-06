@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthEngine\LaravelLogging\Middleware;
+namespace Healthengine\LaravelLogging\Middleware;
 
 use Closure;
 use Psr\Log\LoggerInterface;

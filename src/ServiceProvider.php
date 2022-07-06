@@ -1,12 +1,9 @@
 <?php
 
-namespace HealthEngine\LaravelLogging;
+namespace Healthengine\LaravelLogging;
 
-use HealthEngine\LaravelLogging\Taps\LogstashTap;
-use HealthEngine\LaravelLogging\Taps\ProcessorTap;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Monolog\Handler\StreamHandler;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -24,29 +21,10 @@ class ServiceProvider extends BaseServiceProvider
         Queue::looping(function () {
             app('log')->reset();
         });
+    }
 
-        // add a preconfigured log channel for logstash
-        config(['logging.channels.logstash' => [
-            'driver' => 'single',
-            'path' => env('LOG_STREAM', storage_path('logs/app.log')),
-            'level' => env('LOG_LEVEL', 'info'),
-            'tap' => [
-                LogstashTap::class,
-                ProcessorTap::class,
-            ],
-        ]]);
-
-        // add a preconfigured log channel for stdout
-        config(['logging.channels.stdout' => [
-            'driver' => 'monolog',
-            'handler' => StreamHandler::class,
-            'with' => [
-                'stream' => 'php://stdout',
-            ],
-            'tap' => [
-                LogstashTap::class,
-                ProcessorTap::class,
-            ],
-        ]]);
+    public function register()
+    {
+        $this->mergeConfigFrom(__DIR__ . '/../config/laravel-logging.php', 'logging.channels');
     }
 }

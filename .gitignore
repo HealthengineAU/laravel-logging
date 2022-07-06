@@ -13,3 +13,6 @@ coverage*
 # editors
 .idea
 *.swp
+
+# PHPUnit cache
+.phpunit.cache

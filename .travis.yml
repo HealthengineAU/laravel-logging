@@ -1,23 +1,32 @@
 language: php
 
 php:
-  - 7.2
-  - 7.3
-  # - nightly
+  - 7.4
+  - 8.0
 
 cache:
   directories:
     - $HOME/.composer
 
 before_script:
-  - composer install -n
+  - composer update
 
 script:
-  - composer phpunit
+  - vendor/bin/phpunit --no-coverage
 
-after_success:
-  - travis_retry composer require php-coveralls/php-coveralls
-  - travis_retry php vendor/bin/php-coveralls -v
+jobs:
+  include:
+    - stage: coverage
+      php: 8.0
+      env:
+        - XDEBUG_MODE=coverage
+      before_script:
+        - composer update
+      script:
+        - composer phpunit
+      after_success:
+        - travis_retry composer require -W php-coveralls/php-coveralls
+        - travis_retry php vendor/bin/php-coveralls -v
 
 notifications:
   email: false

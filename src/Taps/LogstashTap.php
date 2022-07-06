@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthEngine\LaravelLogging\Taps;
+namespace Healthengine\LaravelLogging\Taps;
 
 use Monolog\Formatter\LogstashFormatter;
 

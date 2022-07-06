@@ -26,13 +26,23 @@ It includes the following processors to enrich logs with extra data:
 
 ## Usage
 
-A `logstash` and `stdout` logger have been made available for use as logging channels. You can use these in a stack
+A `logstash_single`, `logstash_stderr`, and `logstash_stdout` logger have been made available for use as logging channels. You can use these in a stack
 along with some others or use them standalone. Simply set your `LOG_CHANNEL` environment variable to either of those
-pre-configured channels.  
-The `stdout` channel includes a formatter for Logstash, the only difference compared to the `logstash` channel is that
-the log lines go to STDOUT instead of to a file. This is useful for Laravel queue workers running in docker.
+pre-configured channels.
 
-_Note:_ The BuildTagProcessor requires you to inject the Docker build tag into `build_tag` key in `config/app.php`. If
+To customise configuration of these channels,
+[copy the contents of `laravel-logging.php`](./config/laravel-logging.php) to the `channels` key in the application's
+`config/logging.php` file.
+
+The `logstash_stderr` channel includes a formatter for Logstash, the only difference compared to the `logstash` channel is that
+the log lines go to STDERR instead of to a file. This is useful for a Laravel application running in docker.
+
+The `logstash_stdout` channel includes a formatter for Logstash, the only difference compared to the `logstash` channel is that
+the log lines go to STDOUT instead of to a file. This is useful for a Laravel application running in docker.
+
+_Note:_ The `logstash_stdout` channel cannot be used with PHP FPM processes because PHP FPM makes STDOUT unavailable internally.
+
+_Note:_ The `BuildTagProcessor` requires you to inject the Docker build tag into `build_tag` key in `config/app.php`. If
 it is not present, the value is not added to the logs.
 
 ## License

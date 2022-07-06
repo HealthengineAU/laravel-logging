@@ -1,12 +1,12 @@
 <?php
 
-namespace HealthEngine\LaravelLogging\Tests;
+namespace Healthengine\LaravelLogging\Tests;
 
-use HealthEngine\LaravelLogging\Processors\BuildTagProcessor;
-use HealthEngine\LaravelLogging\Processors\UrlPatternProcessor;
-use HealthEngine\LaravelLogging\ServiceProvider;
-use HealthEngine\LaravelLogging\Taps\LogstashTap;
-use HealthEngine\LaravelLogging\Taps\ProcessorTap;
+use Healthengine\LaravelLogging\Processors\BuildTagProcessor;
+use Healthengine\LaravelLogging\Processors\UrlPatternProcessor;
+use Healthengine\LaravelLogging\ServiceProvider;
+use Healthengine\LaravelLogging\Taps\LogstashTap;
+use Healthengine\LaravelLogging\Taps\ProcessorTap;
 use Illuminate\Queue\Events\Looping;
 use Illuminate\Support\Facades\Log;
 use Monolog\Formatter\LogstashFormatter;
@@ -15,6 +15,13 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Orchestra\Testbench\TestCase;
 
+/**
+ * @covers \Healthengine\LaravelLogging\Processors\BuildTagProcessor
+ * @covers \Healthengine\LaravelLogging\Processors\UrlPatternProcessor
+ * @covers \Healthengine\LaravelLogging\Taps\LogstashTap
+ * @covers \Healthengine\LaravelLogging\Taps\ProcessorTap
+ * @covers \Healthengine\LaravelLogging\ServiceProvider
+ */
 class LoggingTest extends TestCase
 {
     public function testUidResetsWhenLooping()
@@ -146,23 +153,37 @@ class LoggingTest extends TestCase
         $this->assertArrayHasKey('uid', $record);
     }
 
-    public function testLogstashChannel()
+    public function testLogstashSingleChannel()
     {
-        $logger = Log::channel('logstash');
+        $logger = Log::channel('logstash_single');
         $handler = $logger->getHandlers()[0];
         $formatter = $handler->getFormatter();
         $processors = $logger->getProcessors();
 
         // assert the logger has the logstash formatter
         $this->assertInstanceOf(LogstashFormatter::class, $formatter);
-        $this->assertEquals(storage_path('logs/app.log'), $handler->getUrl());
+        $this->assertEquals(storage_path('logs/laravel.log'), $handler->getUrl());
         // crude assertion that the correct processors are attached
         $this->assertCount(7, $processors);
     }
 
-    public function testStdoutChannel()
+    public function testLogstashStderrChannel()
     {
-        $logger = Log::channel('stdout');
+        $logger = Log::channel('logstash_stderr');
+        $handler = $logger->getHandlers()[0];
+        $formatter = $handler->getFormatter();
+        $processors = $logger->getProcessors();
+
+        // assert the logger has the logstash formatter
+        $this->assertInstanceOf(LogstashFormatter::class, $formatter);
+        $this->assertEquals('php://stderr', $handler->getUrl());
+        // crude assertion that the correct processors are attached
+        $this->assertCount(7, $processors);
+    }
+
+    public function testLogstashStdoutChannel()
+    {
+        $logger = Log::channel('logstash_stdout');
         $handler = $logger->getHandlers()[0];
         $formatter = $handler->getFormatter();
         $processors = $logger->getProcessors();

@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthEngine\LaravelLogging\Processors;
+namespace Healthengine\LaravelLogging\Processors;
 
 use Monolog\Processor\ProcessorInterface;
 
