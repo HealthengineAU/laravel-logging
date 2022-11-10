@@ -1,0 +1,29 @@
+language: php
+
+php:
+  - 7.4
+  - 8.0
+
+cache:
+  directories:
+    - $HOME/.composer
+
+before_script:
+  - composer update
+
+script:
+  - vendor/bin/phpunit --no-coverage
+
+jobs:
+  include:
+    - stage: coverage
+      php: 8.0
+      env:
+        - XDEBUG_MODE=coverage
+      before_script:
+        - composer update
+      script:
+        - composer phpunit
+
+notifications:
+  email: false
