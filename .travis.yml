@@ -24,9 +24,6 @@ jobs:
         - composer update
       script:
         - composer phpunit
-      after_success:
-        - travis_retry composer require -W php-coveralls/php-coveralls
-        - travis_retry php vendor/bin/php-coveralls -v
 
 notifications:
   email: false
