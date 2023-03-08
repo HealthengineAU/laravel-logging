@@ -28,7 +28,7 @@ jobs:
           key: v1-<< parameters.php-executor >>-<< parameters.laravel-version >>-dependencies-lowest-{{ checksum "composer.json" }}
           paths:
             - ./vendor
-      - run: composer test
+      - run: composer phpunit
       - restore_cache:
           keys:
             - v1-<< parameters.php-executor >>-<< parameters.laravel-version >>-dependencies-highest-{{ checksum "composer.json" }}
