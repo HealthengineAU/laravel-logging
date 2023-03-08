@@ -15,15 +15,15 @@
         }
     ],
     "require": {
-        "illuminate/log": "^8.0 || ^9.0 || ^10.0",
-        "illuminate/queue": "^8.0 || ^9.0 || ^10.0",
-        "illuminate/support": "^8.0 || ^9.0 || ^10.0",
+        "illuminate/log": "^8.79 || ^9.0 || ^10.0",
+        "illuminate/queue": "^8.79 || ^9.0 || ^10.0",
+        "illuminate/support": "^8.79 || ^9.0 || ^10.0",
         "monolog/monolog": "^2.0 || ^3.0"
     },
     "require-dev": {
         "ext-json": "*",
-        "phpunit/phpunit": "^9.0 || ^10.0",
-        "orchestra/testbench": "^5.0 || ^6.0 || ^7.0 || ^8.0"
+        "phpunit/phpunit": "^9.6 || ^10.0",
+        "orchestra/testbench": "^6.4 || ^7.0 || ^8.0"
     },
     "autoload": {
         "psr-4": {
