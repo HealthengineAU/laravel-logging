@@ -11,6 +11,8 @@ executors:
 jobs:
   test:
     parameters:
+      laravel-version:
+        type: string
       php-executor:
         type: string
     executor: << parameters.php-executor >>
