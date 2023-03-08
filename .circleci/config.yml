@@ -19,25 +19,9 @@ jobs:
     steps:
       - checkout
       - run: composer require illuminate/log=<< parameters.laravel-version >> illuminate/queue=<< parameters.laravel-version >> illuminate/support=<< parameters.laravel-version >>
-      - restore_cache:
-          keys:
-            - v1-<< parameters.php-executor >>-<< parameters.laravel-version >>-dependencies-lowest-{{ checksum "composer.json" }}
-            - v1-<< parameters.php-executor >>-<< parameters.laravel-version >>-dependencies-lowest-
       - run: composer update --prefer-lowest
-      - save_cache:
-          key: v1-<< parameters.php-executor >>-<< parameters.laravel-version >>-dependencies-lowest-{{ checksum "composer.json" }}
-          paths:
-            - ./vendor
       - run: composer phpunit
-      - restore_cache:
-          keys:
-            - v1-<< parameters.php-executor >>-<< parameters.laravel-version >>-dependencies-highest-{{ checksum "composer.json" }}
-            - v1-<< parameters.php-executor >>-<< parameters.laravel-version >>-dependencies-highest-
       - run: composer update
-      - save_cache:
-          key: v1-<< parameters.php-executor >>-<< parameters.laravel-version >>-dependencies-highest-{{ checksum "composer.json" }}
-          paths:
-            - ./vendor
       - run: composer phpunit
 
 workflows:
