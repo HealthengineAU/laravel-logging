@@ -1,6 +1,9 @@
 version: 2.1
 
 executors:
+  php74:
+    docker:
+      - image: cimg/php:7.4
   php80:
     docker:
       - image: cimg/php:8.0
@@ -35,5 +38,8 @@ workflows:
       - test:
           matrix:
             parameters:
-              laravel-version: ['8.0', '9.0']
-              php-executor: [php80, php81]
+              laravel-version: [7.0, 8.0, 9.0]
+              php-executor: [php74, php80, php81]
+          exclude:
+            - laravel-version: 7.0
+              php-executor: php81
