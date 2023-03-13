@@ -27,7 +27,7 @@ jobs:
             - v2-dependencies-php81-laravel-9.0-{{ checksum "composer.json" }}
             - v2-dependencies-php81-laravel-9.0-
       - run: composer update
-      - run: composer phpunit -- --coverage-html
+      - run: composer phpunit -- --coverage-html=coverage
       - store_artifacts:
           path: ./coverage
   test:
