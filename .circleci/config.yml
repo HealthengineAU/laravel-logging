@@ -20,21 +20,11 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependencies-lowest-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
-            - v1-dependencies-lowest-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-
-      - run: composer require --prefer-lowest illuminate/log=^<< parameters.laravel-version >> illuminate/queue=^<< parameters.laravel-version >> illuminate/support=^<< parameters.laravel-version >>
-      - save_cache:
-          key: v1-dependencies-lowest-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
-          paths:
-            - ./vendor
-      - run: composer phpunit
-      - restore_cache:
-          keys:
-            - v1-dependencies-highest-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
-            - v1-dependencies-highest-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-
+            - v1-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
+            - v1-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-
       - run: composer update
       - save_cache:
-          key: v1-dependencies-highest-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
+          key: v1-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
           paths:
             - ./vendor
       - run: composer phpunit
@@ -45,5 +35,5 @@ workflows:
       - test:
           matrix:
             parameters:
-              laravel-version: ['8.79', '9.0']
+              laravel-version: ['8.0', '9.0']
               php-executor: [php80, php81]
