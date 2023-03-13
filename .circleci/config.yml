@@ -20,11 +20,11 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
-            - v1-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-
-      - run: composer update
+            - v2-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
+            - v2-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-
+      - run: composer require illuminate/log=^<< parameters.laravel-version >> illuminate/queue=^<< parameters.laravel-version >> illuminate/support=^<< parameters.laravel-version >>
       - save_cache:
-          key: v1-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
+          key: v2-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
           paths:
             - ./vendor
       - run: composer phpunit
