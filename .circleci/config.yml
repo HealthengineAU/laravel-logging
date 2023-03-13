@@ -38,7 +38,7 @@ workflows:
       - test:
           matrix:
             parameters:
-              laravel-version: [7.0, 8.0, 9.0]
+              laravel-version: ['7.0', '8.0', '9.0']
               php-executor: [php74, php80, php81]
           exclude:
             - laravel-version: 7.0
