@@ -12,6 +12,22 @@ executors:
       - image: cimg/php:8.1
 
 jobs:
+  coverage:
+    steps:
+      - run:
+          command: |
+            sudo -E pecl install pcov
+            sudo -E docker-php-ext-enable pcov
+          name: Install pcov
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-dependencies-php81-laravel-9.0-{{ checksum "composer.json" }}
+            - v2-dependencies-php81-laravel-9.0-
+      - run: composer update
+      - run: composer phpunit -- --coverage-html
+      - store_artifacts:
+          path: ./coverage
   test:
     parameters:
       laravel-version:
@@ -45,19 +61,4 @@ workflows:
             parameters:
               laravel-version: ['7.0', '8.0', '9.0']
               php-executor: [php74, php80, php81]
-      - coverage:
-          steps:
-            - run:
-                command: |
-                  sudo -E pecl install pcov
-                  sudo -E docker-php-ext-enable pcov
-                name: Install pcov
-            - checkout
-            - restore_cache:
-                keys:
-                  - v2-dependencies-php81-laravel-9.0-{{ checksum "composer.json" }}
-                  - v2-dependencies-php81-laravel-9.0-
-            - run: composer update
-            - run: composer phpunit -- --coverage-html
-            - store_artifacts:
-                path: ./coverage
+      - coverage
