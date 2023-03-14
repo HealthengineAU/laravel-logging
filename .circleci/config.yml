@@ -16,18 +16,14 @@ jobs:
     docker:
       - image: cimg/php:8.1
     steps:
-      - run:
-          command: |
-            sudo -E pecl install pcov
-            sudo -E docker-php-ext-enable pcov
-          name: Install pcov
+      - run: sudo -E pecl install pcov
       - checkout
       - restore_cache:
           keys:
             - v2-dependencies-php81-laravel-9.0-{{ checksum "composer.json" }}
             - v2-dependencies-php81-laravel-9.0-
       - run: composer update
-      - run: composer phpunit -- --coverage
+      - run: composer phpunit
       - store_artifacts:
           path: ./coverage
   test:
