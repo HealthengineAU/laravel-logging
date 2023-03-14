@@ -26,10 +26,7 @@ jobs:
               - equal: [ php81, << parameters.php-executor >> ]
               - equal: [ '9.0', << parameters.laravel-version >> ]
           steps:
-            - command: |
-                sudo -E pecl install pcov
-                sudo -E docker-php-ext-enable pcov
-              name: Install pcov
+            - run: sudo -E pecl install pcov &&sudo -E docker-php-ext-enable pcov
       - checkout
       - restore_cache:
           keys:
