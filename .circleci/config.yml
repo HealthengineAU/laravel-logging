@@ -16,7 +16,11 @@ jobs:
     docker:
       - image: cimg/php:8.1
     steps:
-      - run: sudo -E pecl install pcov
+      - run:
+          command: |
+            sudo -E pecl install pcov
+            sudo -E docker-php-ext-enable pcov
+          name: Install pcov
       - checkout
       - restore_cache:
           keys:
