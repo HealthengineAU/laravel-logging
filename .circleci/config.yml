@@ -12,24 +12,6 @@ executors:
       - image: cimg/php:8.1
 
 jobs:
-  coverage:
-    docker:
-      - image: cimg/php:8.1
-    steps:
-      - run:
-          command: |
-            sudo -E pecl install pcov
-            sudo -E docker-php-ext-enable pcov
-          name: Install pcov
-      - checkout
-      - restore_cache:
-          keys:
-            - v2-dependencies-php81-laravel-9.0-{{ checksum "composer.json" }}
-            - v2-dependencies-php81-laravel-9.0-
-      - run: composer update
-      - run: composer phpunit
-      - store_artifacts:
-          path: ./coverage
   test:
     parameters:
       laravel-version:
@@ -38,6 +20,15 @@ jobs:
         type: string
     executor: << parameters.php-executor >>
     steps:
+      - run:
+          command: |
+            sudo -E pecl install pcov
+            sudo -E docker-php-ext-enable pcov
+          name: Install pcov
+        when:
+          and:
+            - equal: [ php81, << parameters.php-executor >> ]
+            - equal: [ '9.0', << parameters.laravel-version >> ]
       - checkout
       - restore_cache:
           keys:
@@ -49,6 +40,12 @@ jobs:
           paths:
             - ./vendor
       - run: composer phpunit
+      - store_artifacts:
+          path: ./coverage
+        when:
+          and:
+            - equal: [ php81, << parameters.php-executor >> ]
+            - equal: [ '9.0', << parameters.laravel-version >> ]
 
 workflows:
   all-tests:
@@ -60,10 +57,6 @@ workflows:
                 php-executor: php81
               - laravel-version: '9.0'
                 php-executor: php74
-              # Highest version of Laravel and PHP is excluded from matrix because the coverage step tests it.
-              - laravel-version: '9.0'
-                php-executor: php81
             parameters:
               laravel-version: ['7.0', '8.0', '9.0']
               php-executor: [php74, php80, php81]
-      - coverage
