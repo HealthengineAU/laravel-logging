@@ -7,7 +7,6 @@
          bootstrap="vendor/autoload.php"
          cacheResultFile=".phpunit.cache/test-results"
          colors="true"
-         convertDeprecationsToExceptions="true"
          executionOrder="depends,defects"
          forceCoversAnnotation="true"
          failOnRisky="true"
@@ -24,8 +23,6 @@
             <directory suffix=".php">src</directory>
         </include>
         <report>
-            <clover outputFile="coverage/clover.xml"/>
-            <html outputDirectory="coverage"/>
             <text outputFile="php://stdout"/>
         </report>
     </coverage>

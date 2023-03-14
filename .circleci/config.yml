@@ -1,0 +1,48 @@
+version: 2.1
+
+executors:
+  php74:
+    docker:
+      - image: cimg/php:7.4
+  php80:
+    docker:
+      - image: cimg/php:8.0
+  php81:
+    docker:
+      - image: cimg/php:8.1
+
+jobs:
+  test:
+    parameters:
+      laravel-version:
+        type: string
+      php-executor:
+        type: string
+    executor: << parameters.php-executor >>
+    steps:
+      - run: sudo -E pecl install pcov && sudo -E docker-php-ext-enable pcov
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
+            - v2-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-
+      - run: composer require illuminate/log=^<< parameters.laravel-version >> illuminate/queue=^<< parameters.laravel-version >> illuminate/support=^<< parameters.laravel-version >>
+      - save_cache:
+          key: v2-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
+          paths:
+            - ./vendor
+      - run: composer phpunit
+
+workflows:
+  all-tests:
+    jobs:
+      - test:
+          matrix:
+            exclude:
+              - laravel-version: '7.0'
+                php-executor: php81
+              - laravel-version: '9.0'
+                php-executor: php74
+            parameters:
+              laravel-version: ['7.0', '8.0', '9.0']
+              php-executor: [php74, php80, php81]

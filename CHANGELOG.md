@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v3.0.2]
+
+### Added
+
+- Add Circle CI.
+
+### Removed
+
+- Removed support for Laravel 10. Major version of `monolog/monolog` changes with this version of Laravel which is not
+  compatible with this version of the library.
+
 ## [v3.0.1] - 2023-02-16
 
 ### Added

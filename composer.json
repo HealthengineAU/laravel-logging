@@ -8,18 +8,22 @@
         {
             "name": "Jarryd Tilbrook",
             "email": "jrad.tilbrook@gmail.com"
+        },
+        {
+            "name": "Thomas Spencer",
+            "email": "thomas.spencer@healthengine.com.au"
         }
     ],
     "require": {
-        "illuminate/log": "^7.0 || ^8.0 || ^9.0 || ^10.0",
-        "illuminate/queue": "^7.0 || ^8.0 || ^9.0 || ^10.0",
-        "illuminate/support": "^7.0 || ^8.0 || ^9.0 || ^10.0",
+        "illuminate/log": "^7.0 || ^8.0 || ^9.0",
+        "illuminate/queue": "^7.0 || ^8.0 || ^9.0",
+        "illuminate/support": "^7.0 || ^8.0 || ^9.0",
         "monolog/monolog": "^2.0"
     },
     "require-dev": {
         "ext-json": "*",
         "phpunit/phpunit": "^9.0",
-        "orchestra/testbench": "^5.0 || ^6.0 || ^7.0 || ^8.0"
+        "orchestra/testbench": "^5.0 || ^6.0 || ^7.0"
     },
     "autoload": {
         "psr-4": {
