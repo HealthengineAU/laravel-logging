@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.0.0]
+
+### Added
+
+- Added support for Laravel 10.
+- Added support for Monolog 3.
+- Added support for PHP 8.2.
+
+### Removed
+
+- Removed support for Laravel 7, 8, and 9.
+- Removed support for Monolog 2.
+- Removed support for PHP 7.4, and 8.0.
+
 ## [v3.0.2]
 
 ### Added
