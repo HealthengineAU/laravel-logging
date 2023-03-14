@@ -6,6 +6,7 @@ use Healthengine\LaravelLogging\Middleware\MonitorRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Monolog\Handler\TestHandler;
+use Monolog\Level;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 
@@ -37,7 +38,7 @@ class MonitorRequestTest extends TestCase
                     'http_status_code' => 200,
                 ]
             ],
-            Logger::INFO
+            Level::Info
         ));
     }
 }
