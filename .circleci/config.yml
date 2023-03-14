@@ -20,15 +20,16 @@ jobs:
         type: string
     executor: << parameters.php-executor >>
     steps:
-      - run:
-          command: |
-            sudo -E pecl install pcov
-            sudo -E docker-php-ext-enable pcov
-          name: Install pcov
-        when:
-          and:
-            - equal: [ php81, << parameters.php-executor >> ]
-            - equal: [ '9.0', << parameters.laravel-version >> ]
+      - when:
+          condition:
+            and:
+              - equal: [ php81, << parameters.php-executor >> ]
+              - equal: [ '9.0', << parameters.laravel-version >> ]
+          steps:
+            - command: |
+                sudo -E pecl install pcov
+                sudo -E docker-php-ext-enable pcov
+              name: Install pcov
       - checkout
       - restore_cache:
           keys:
@@ -40,12 +41,14 @@ jobs:
           paths:
             - ./vendor
       - run: composer phpunit
-      - store_artifacts:
-          path: ./coverage
-        when:
-          and:
-            - equal: [ php81, << parameters.php-executor >> ]
-            - equal: [ '9.0', << parameters.laravel-version >> ]
+      - when:
+          condition:
+            and:
+              - equal: [ php81, << parameters.php-executor >> ]
+              - equal: [ '9.0', << parameters.laravel-version >> ]
+          steps:
+            - store_artifacts:
+                path: ./coverage
 
 workflows:
   all-tests:
