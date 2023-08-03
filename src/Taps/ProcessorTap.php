@@ -38,6 +38,7 @@ class ProcessorTap
                         'server' => 'SERVER_NAME',
                         'unique_id' => 'HTTP_X_AMZN_TRACE_ID',
                         'url' => 'REQUEST_URI',
+                        'user_agent'  => 'HTTP_USER_AGENT',
                     ])
             );
     }
