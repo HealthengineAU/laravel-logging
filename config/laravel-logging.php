@@ -13,6 +13,9 @@ return [
             LogstashTap::class,
             ProcessorTap::class,
         ],
+        'processors' => [
+            \Monolog\Processor\WebProcessor::class
+        ],
     ],
 
     'logstash_stderr' => [
@@ -22,6 +25,9 @@ return [
         'tap' => [
             LogstashTap::class,
             ProcessorTap::class,
+        ],
+        'processors' => [
+            \Monolog\Processor\WebProcessor::class
         ],
         'with' => [
             'stream' => 'php://stderr',
@@ -35,6 +41,9 @@ return [
         'tap' => [
             LogstashTap::class,
             ProcessorTap::class,
+        ],
+        'processors' => [
+            \Monolog\Processor\WebProcessor::class
         ],
         'with' => [
             'stream' => 'php://stdout',
