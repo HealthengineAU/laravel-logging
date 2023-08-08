@@ -32,8 +32,9 @@ class ProcessorTap
                 new WebProcessor(
                     null,
                     [
+                        'forwarded_for' => 'HTTP_X_FORWARDED_FOR',
                         'http_method' => 'REQUEST_METHOD',
-                        'ip' => 'HTTP_X_FORWARDED_FOR',
+                        'ip' => 'REMOTE_ADDR',
                         'referrer' => 'HTTP_REFERER',
                         'server' => 'SERVER_NAME',
                         'unique_id' => 'HTTP_X_AMZN_TRACE_ID',
