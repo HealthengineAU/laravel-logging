@@ -6,7 +6,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v4.0.0]
+## [v4.0.2] - 2023-08-08
+
+### Added
+
+- Added new logging context `extra.forwarded_for` which uses the value of `$_SERVER['HTTP_X_FORWARDED_FOR']`.
+
+### Changed
+
+- Changed logging context `extra.ip` to use value of `$_SERVER['REMOTE_ADDR']` instead of
+  `$_SERVER['HTTP_X_FORWARDED_FOR']`.
+
+## [v4.0.1] - 2023-08-03
+
+### Added
+
+- Added new logging context `extra.user_agent` which uses the value of `$_SERVER['HTTP_USER_AGENT']`.
+
+## [v4.0.0] - 2023-03-14
 
 ### Added
 
@@ -19,6 +36,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed support for Laravel 7, 8, and 9.
 - Removed support for Monolog 2.
 - Removed support for PHP 7.4, and 8.0.
+
+## [v3.0.4] - 2023-08-08
+
+### Added
+
+- Added new logging context `extra.forwarded_for` which uses the value of `$_SERVER['HTTP_X_FORWARDED_FOR']`.
+
+### Changed
+
+- Changed logging context `extra.ip` to use value of `$_SERVER['REMOTE_ADDR']` instead of
+  `$_SERVER['HTTP_X_FORWARDED_FOR']`.
+
+## [v3.0.3] - 2023-08-03
+
+### Added
+
+- Added new logging context `extra.user_agent` which uses the value of `$_SERVER['HTTP_USER_AGENT']`.
 
 ## [v3.0.2]
 
@@ -65,3 +99,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed support for versions `~5.7` and `^6.0` of `illuminate/support`.
 - Removed testing against PHP 7.3 in Travis CI.
 - Removed support for versions `^7.5` and `^8.0` of `phpunit/phpunit`.
+
+[unreleased]: https://github.com/HealthEngineAU/laravel-logging/compare/v4.0.2...HEAD
+[v4.0.2]: https://github.com/HealthEngineAU/laravel-logging/compare/v4.0.1...v4.0.2
+[v4.0.1]: https://github.com/HealthEngineAU/laravel-logging/compare/v4.0.0...v4.0.1
+[v4.0.0]: https://github.com/HealthEngineAU/laravel-logging/compare/v3.0.4...v4.0.0
+[v3.0.4]: https://github.com/HealthEngineAU/laravel-logging/compare/v3.0.3...v3.0.4
+[v3.0.3]: https://github.com/HealthEngineAU/laravel-logging/compare/v3.0.2...v3.0.3
+[v3.0.2]: https://github.com/HealthEngineAU/laravel-logging/compare/v3.0.1...v3.0.2
+[v3.0.1]: https://github.com/HealthEngineAU/laravel-logging/compare/v3.0.0...v3.0.1
+[v3.0.0]: https://github.com/HealthEngineAU/laravel-logging/compare/v2.0.4....v3.0.0
