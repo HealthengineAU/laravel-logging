@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.0.3] - 2024-07-24
+
+### Added
+
+- Added support for PHP 8.3.
+
 ## [v4.0.2] - 2023-08-08
 
 ### Added
@@ -100,12 +106,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed testing against PHP 7.3 in Travis CI.
 - Removed support for versions `^7.5` and `^8.0` of `phpunit/phpunit`.
 
-[unreleased]: https://github.com/HealthEngineAU/laravel-logging/compare/v4.0.2...HEAD
-[v4.0.2]: https://github.com/HealthEngineAU/laravel-logging/compare/v4.0.1...v4.0.2
-[v4.0.1]: https://github.com/HealthEngineAU/laravel-logging/compare/v4.0.0...v4.0.1
-[v4.0.0]: https://github.com/HealthEngineAU/laravel-logging/compare/v3.0.4...v4.0.0
-[v3.0.4]: https://github.com/HealthEngineAU/laravel-logging/compare/v3.0.3...v3.0.4
-[v3.0.3]: https://github.com/HealthEngineAU/laravel-logging/compare/v3.0.2...v3.0.3
-[v3.0.2]: https://github.com/HealthEngineAU/laravel-logging/compare/v3.0.1...v3.0.2
-[v3.0.1]: https://github.com/HealthEngineAU/laravel-logging/compare/v3.0.0...v3.0.1
-[v3.0.0]: https://github.com/HealthEngineAU/laravel-logging/compare/v2.0.4....v3.0.0
+[unreleased]: https://github.com/HealthengineAU/laravel-logging/compare/v4.0.3...HEAD
+[v4.0.3]: https://github.com/HealthengineAU/laravel-logging/compare/v4.0.2...v4.0.3
+[v4.0.2]: https://github.com/HealthengineAU/laravel-logging/compare/v4.0.1...v4.0.2
+[v4.0.1]: https://github.com/HealthengineAU/laravel-logging/compare/v4.0.0...v4.0.1
+[v4.0.0]: https://github.com/HealthengineAU/laravel-logging/compare/v3.0.4...v4.0.0
+[v3.0.4]: https://github.com/HealthengineAU/laravel-logging/compare/v3.0.3...v3.0.4
+[v3.0.3]: https://github.com/HealthengineAU/laravel-logging/compare/v3.0.2...v3.0.3
+[v3.0.2]: https://github.com/HealthengineAU/laravel-logging/compare/v3.0.1...v3.0.2
+[v3.0.1]: https://github.com/HealthengineAU/laravel-logging/compare/v3.0.0...v3.0.1
+[v3.0.0]: https://github.com/HealthengineAU/laravel-logging/compare/v2.0.4....v3.0.0
