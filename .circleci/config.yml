@@ -7,6 +7,9 @@ executors:
   php82:
     docker:
       - image: cimg/php:8.2
+  php83:
+    docker:
+      - image: cimg/php:8.3
 
 jobs:
   test:
@@ -37,4 +40,4 @@ workflows:
           matrix:
             parameters:
               laravel-version: ['10.0']
-              php-executor: [php81, php82]
+              php-executor: [php81, php82, php83]
