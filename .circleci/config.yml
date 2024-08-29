@@ -4,40 +4,75 @@ executors:
   php81:
     docker:
       - image: cimg/php:8.1
+    resource_class: small
   php82:
     docker:
       - image: cimg/php:8.2
+    resource_class: small
   php83:
     docker:
       - image: cimg/php:8.3
+    resource_class: small
 
 jobs:
   test:
     parameters:
-      laravel-version:
+      laravel_version:
         type: string
-      php-executor:
+      php_executor:
         type: string
-    executor: << parameters.php-executor >>
+      testbench_version:
+        type: string
+    executor: << parameters.php_executor >>
+    steps:
+      - checkout
+      - run: composer require --no-update illuminate/log=^<< parameters.laravel_version >>.0
+      - run: composer require --no-update illuminate/queue=^<< parameters.laravel_version >>.0
+      - run: composer require --no-update illuminate/support=^<< parameters.laravel_version >>.0
+      - run: composer require --dev --no-update orchestra/testbench=^<< parameters.testbench_version >>.0
+      - run: composer update --prefer-lowest
+      - run: composer test
+      - run: composer update
+      - run: composer test
+  coverage:
+    executor: php83
     steps:
       - run: sudo -E pecl install pcov && sudo -E docker-php-ext-enable pcov
       - checkout
-      - restore_cache:
-          keys:
-            - v2-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
-            - v2-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-
-      - run: composer require illuminate/log=^<< parameters.laravel-version >> illuminate/queue=^<< parameters.laravel-version >> illuminate/support=^<< parameters.laravel-version >>
-      - save_cache:
-          key: v2-dependencies-<< parameters.php-executor >>-laravel-<< parameters.laravel-version >>-{{ checksum "composer.json" }}
-          paths:
-            - ./vendor
-      - run: composer phpunit
+      - run: composer update
+      - run: composer coverage
 
 workflows:
-  all-tests:
+  test_coverage:
     jobs:
       - test:
           matrix:
+            exclude:
+              - laravel_version: '10'
+                php_executor: php81
+                testbench_version: '9'
+              - laravel_version: '10'
+                php_executor: php82
+                testbench_version: '9'
+              - laravel_version: '10'
+                php_executor: php83
+                testbench_version: '9'
+              - laravel_version: '11'
+                php_executor: php81
+                testbench_version: '8'
+              - laravel_version: '11'
+                php_executor: php81
+                testbench_version: '9'
+              - laravel_version: '11'
+                php_executor: php82
+                testbench_version: '8'
+              - laravel_version: '11'
+                php_executor: php83
+                testbench_version: '8'
             parameters:
-              laravel-version: ['10.0']
-              php-executor: [php81, php82, php83]
+              laravel_version: ['10', '11']
+              php_executor: [php81, php82, php83]
+              testbench_version: ['8', '9']
+      - coverage:
+          requires:
+            - test

@@ -2,6 +2,8 @@
 
 namespace Healthengine\LaravelLogging\Tests;
 
+use Composer\InstalledVersions;
+use Composer\Semver\Comparator;
 use Healthengine\LaravelLogging\Processors\BuildTagProcessor;
 use Healthengine\LaravelLogging\Processors\UrlPatternProcessor;
 use Healthengine\LaravelLogging\ServiceProvider;
@@ -199,8 +201,21 @@ class LoggingTest extends TestCase
         // assert the logger has the logstash formatter
         $this->assertInstanceOf(LogstashFormatter::class, $formatter);
         $this->assertEquals(storage_path('logs/laravel.log'), $handler->getUrl());
+
+        // Laravel 11 adds an extra processor into the logger which will add any global context to the logs.
+        if (
+            Comparator::greaterThanOrEqualTo(
+                InstalledVersions::getVersion('laravel/framework'),
+                '11.0.0'
+            )
+        ) {
+            $expectedCount = 8;
+        } else {
+            $expectedCount = 7;
+        }
+
         // crude assertion that the correct processors are attached
-        $this->assertCount(7, $processors);
+        $this->assertCount($expectedCount, $processors);
     }
 
     public function testLogstashStderrChannel()
@@ -213,8 +228,21 @@ class LoggingTest extends TestCase
         // assert the logger has the logstash formatter
         $this->assertInstanceOf(LogstashFormatter::class, $formatter);
         $this->assertEquals('php://stderr', $handler->getUrl());
+
+        // Laravel 11 adds an extra processor into the logger which will add any global context to the logs.
+        if (
+            Comparator::greaterThanOrEqualTo(
+                InstalledVersions::getVersion('laravel/framework'),
+                '11.0.0'
+            )
+        ) {
+            $expectedCount = 8;
+        } else {
+            $expectedCount = 7;
+        }
+
         // crude assertion that the correct processors are attached
-        $this->assertCount(7, $processors);
+        $this->assertCount($expectedCount, $processors);
     }
 
     public function testLogstashStdoutChannel()
@@ -227,8 +255,21 @@ class LoggingTest extends TestCase
         // assert the logger has the logstash formatter
         $this->assertInstanceOf(LogstashFormatter::class, $formatter);
         $this->assertEquals('php://stdout', $handler->getUrl());
+
+        // Laravel 11 adds an extra processor into the logger which will add any global context to the logs.
+        if (
+            Comparator::greaterThanOrEqualTo(
+                InstalledVersions::getVersion('laravel/framework'),
+                '11.0.0'
+            )
+        ) {
+            $expectedCount = 8;
+        } else {
+            $expectedCount = 7;
+        }
+
         // crude assertion that the correct processors are attached
-        $this->assertCount(7, $processors);
+        $this->assertCount($expectedCount, $processors);
     }
 
     protected function getPackageProviders($app)
