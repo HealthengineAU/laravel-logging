@@ -6,3 +6,5 @@ updates:
     open-pull-requests-limit: 0
     pull-request-branch-name:
       separator: '-'
+    schedule:
+      interval: monthly
