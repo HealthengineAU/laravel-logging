@@ -1,8 +1,8 @@
 ---
+version: 2
 updates:
   - directory: /
     package-ecosystem: composer
     open-pull-requests-limit: 0
     pull-request-branch-name:
       separator: '-'
-version: 2
