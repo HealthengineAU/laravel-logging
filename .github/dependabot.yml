@@ -1,13 +1,8 @@
-version: 2
-
+---
 updates:
-- package-ecosystem: composer
-  directory: "/"
-  schedule:
-    interval: daily
-  pull-request-branch-name:
-    separator: "-"
-  reviewers:
-  - tspencer244
-  assignees:
-  - tspencer244
+  - directory: /
+    package-ecosystem: composer
+    open-pull-requests-limit: 0
+    pull-request-branch-name:
+      separator: '-'
+version: 2
