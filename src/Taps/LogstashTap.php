@@ -2,7 +2,7 @@
 
 namespace Healthengine\LaravelLogging\Taps;
 
-use Monolog\Formatter\LogstashFormatter;
+use Healthengine\LaravelLogging\Formatters\LogstashFormatter;
 
 class LogstashTap
 {

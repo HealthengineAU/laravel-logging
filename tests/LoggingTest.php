@@ -143,7 +143,6 @@ class LoggingTest extends TestCase
         $expectedIp = '192.168.1.1';
         $expectedReferrer = 'https://duckduckgo.com/';
         $expectedServer = 'duckduckgo.com';
-        $expectedUniqueId = '03ef5820-228c-4344-b43a-c9c8bc36e3bf';
         $expectedUrl = '/home';
         $expectedUserAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0'
             . ' Safari/537.36';
@@ -151,7 +150,6 @@ class LoggingTest extends TestCase
         $_SERVER['HTTP_REFERER'] = $expectedReferrer;
         $_SERVER['HTTP_USER_AGENT'] = $expectedUserAgent;
         $_SERVER['HTTP_X_FORWARDED_FOR'] = $expectedForwardedFor;
-        $_SERVER['HTTP_X_AMZN_TRACE_ID'] = $expectedUniqueId;
         $_SERVER['REMOTE_ADDR'] = $expectedIp;
         $_SERVER['REQUEST_METHOD'] = $expectedHttpMethod;
         $_SERVER['REQUEST_URI'] = $expectedUrl;
@@ -183,8 +181,6 @@ class LoggingTest extends TestCase
         $this->assertArrayHasKey('server', $record);
         $this->assertEquals($record['server'], $expectedServer);
         $this->assertArrayHasKey('uid', $record);
-        $this->assertArrayHasKey('unique_id', $record);
-        $this->assertEquals($record['unique_id'], $expectedUniqueId);
         $this->assertArrayHasKey('url', $record);
         $this->assertEquals($record['url'], $expectedUrl);
         $this->assertArrayHasKey('user_agent', $record);

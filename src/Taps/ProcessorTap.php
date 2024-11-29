@@ -4,7 +4,7 @@ namespace Healthengine\LaravelLogging\Taps;
 
 use Healthengine\LaravelLogging\Processors\BuildTagProcessor;
 use Healthengine\LaravelLogging\Processors\UrlPatternProcessor;
-use Monolog\Logger as MonoLogger;
+use Monolog\Level;
 use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\MemoryPeakUsageProcessor;
 use Monolog\Processor\MemoryUsageProcessor;
@@ -27,7 +27,7 @@ class ProcessorTap
             ->pushProcessor(new MemoryUsageProcessor(true, false))
             ->pushProcessor(new UidProcessor())
             ->pushProcessor(new UrlPatternProcessor())
-            ->pushProcessor(new IntrospectionProcessor(MonoLogger::DEBUG, ['Illuminate\\']))
+            ->pushProcessor(new IntrospectionProcessor(Level::Debug, ['Illuminate\\']))
             ->pushProcessor(
                 new WebProcessor(
                     null,
@@ -37,10 +37,10 @@ class ProcessorTap
                         'ip' => 'REMOTE_ADDR',
                         'referrer' => 'HTTP_REFERER',
                         'server' => 'SERVER_NAME',
-                        'unique_id' => 'HTTP_X_AMZN_TRACE_ID',
                         'url' => 'REQUEST_URI',
                         'user_agent'  => 'HTTP_USER_AGENT',
-                    ])
+                    ],
+                ),
             );
     }
 }
