@@ -1,0 +1,177 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Monolog package.
+ *
+ * (c) Jordi Boggiano <j.boggiano@seld.be>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Healthengine\LaravelLogging\Formatters\Tests;
+
+use Healthengine\LaravelLogging\Formatters\LogstashFormatter;
+use Monolog\Level;
+use Monolog\Test\TestCase;
+
+/**
+ * @covers Healthengine\LaravelLogging\Formatters\LogstashFormatter
+ */
+class LogstashFormatterTest extends TestCase
+{
+    public function testDefaultFormatterV1()
+    {
+        $formatter = new LogstashFormatter('test', 'hostname');
+        $record = $this->getRecord(
+            Level::Error,
+            'log',
+            channel: 'meh',
+            datetime: new \DateTimeImmutable("@0"),
+        );
+
+        $message = json_decode($formatter->format($record), true);
+
+        $this->assertEquals("1970-01-01T00:00:00.000000+00:00", $message['@timestamp']);
+        $this->assertEquals("1", $message['@version']);
+        $this->assertEquals('log', $message['message']);
+        $this->assertEquals('meh', $message['channel']);
+        $this->assertEquals(Level::Error->getName(), $message['level']);
+        $this->assertEquals(Level::Error->value, $message['monolog_level']);
+        $this->assertEquals('test', $message['type']);
+        $this->assertEquals('hostname', $message['host']);
+
+        $formatter = new LogstashFormatter('mysystem');
+
+        $message = json_decode($formatter->format($record), true);
+
+        $this->assertEquals('mysystem', $message['type']);
+    }
+
+    public function testFormatWithFileAndLineV1()
+    {
+        $formatter = new LogstashFormatter('test');
+        $record = $this->getRecord(
+            Level::Error,
+            'log',
+            channel: 'meh',
+            context: ['from' => 'logger'],
+            datetime: new \DateTimeImmutable("@0"),
+            extra: ['file' => 'test', 'line' => 14],
+        );
+
+        $message = json_decode($formatter->format($record), true);
+
+        $this->assertEquals('test', $message['extra']['file']);
+        $this->assertEquals(14, $message['extra']['line']);
+    }
+
+    public function testFormatWithContextV1()
+    {
+        $formatter = new LogstashFormatter('test');
+        $record = $this->getRecord(
+            Level::Error,
+            'log',
+            channel: 'meh',
+            context: ['from' => 'logger'],
+            datetime: new \DateTimeImmutable("@0"),
+            extra: ['key' => 'pair'],
+        );
+
+        $message = json_decode($formatter->format($record), true);
+
+        $this->assertArrayHasKey('context', $message);
+        $this->assertArrayHasKey('from', $message['context']);
+        $this->assertEquals('logger', $message['context']['from']);
+
+        // Test with extraPrefix
+        $formatter = new LogstashFormatter('test', null, 'extra', 'CTX');
+        $message = json_decode($formatter->format($record), true);
+
+        $this->assertArrayHasKey('CTX', $message);
+        $this->assertArrayHasKey('from', $message['CTX']);
+        $this->assertEquals('logger', $message['CTX']['from']);
+    }
+
+    public function testFormatWithExtraV1()
+    {
+        $formatter = new LogstashFormatter('test');
+        $record = $this->getRecord(
+            Level::Error,
+            'log',
+            channel: 'meh',
+            context: ['from' => 'logger'],
+            datetime: new \DateTimeImmutable("@0"),
+            extra: ['key' => 'pair'],
+        );
+
+        $message = json_decode($formatter->format($record), true);
+
+        $this->assertArrayHasKey('extra', $message);
+        $this->assertArrayHasKey('key', $message['extra']);
+        $this->assertEquals('pair', $message['extra']['key']);
+
+        // Test with extraPrefix
+        $formatter = new LogstashFormatter('test', null, 'EXTRA');
+        $message = json_decode($formatter->format($record), true);
+
+        $this->assertArrayHasKey('EXTRA', $message);
+        $this->assertArrayHasKey('key', $message['EXTRA']);
+        $this->assertEquals('pair', $message['EXTRA']['key']);
+    }
+
+    public function testFormatWithApplicationNameV1()
+    {
+        $formatter = new LogstashFormatter('app', 'test');
+        $record = $this->getRecord(
+            Level::Error,
+            'log',
+            channel: 'meh',
+            context: ['from' => 'logger'],
+            datetime: new \DateTimeImmutable("@0"),
+            extra: ['key' => 'pair'],
+        );
+
+        $message = json_decode($formatter->format($record), true);
+
+        $this->assertArrayHasKey('type', $message);
+        $this->assertEquals('app', $message['type']);
+    }
+
+    public function testFormatWithLatin9Data()
+    {
+        $formatter = new LogstashFormatter('test', 'hostname');
+        $record = $this->getRecord(
+            Level::Error,
+            'log',
+            channel: '¯\_(ツ)_/¯',
+            datetime: new \DateTimeImmutable("@0"),
+            extra: [
+                'user_agent' => "\xD6WN; FBCR/OrangeEspa\xF1a; Vers\xE3o/4.0; F\xE4rist",
+            ],
+        );
+
+        $message = json_decode($formatter->format($record), true);
+
+        $this->assertEquals("1970-01-01T00:00:00.000000+00:00", $message['@timestamp']);
+        $this->assertEquals('log', $message['message']);
+        $this->assertEquals('¯\_(ツ)_/¯', $message['channel']);
+        $this->assertEquals('ERROR', $message['level']);
+        $this->assertEquals('test', $message['type']);
+        $this->assertEquals('hostname', $message['host']);
+        $this->assertEquals('�WN; FBCR/OrangeEspa�a; Vers�o/4.0; F�rist', $message['extra']['user_agent']);
+    }
+
+    public function testInjectOtherData()
+    {
+        $message = [];
+        $_SERVER['HTTP_X_AMZN_TRACE_ID'] = 'abcd-1234';
+
+        $formatter = new LogstashFormatter('test', 'hostname');
+        $formatter->injectOtherData($message);
+
+        $this->assertEquals(['X-Amzn-Trace-Id' => 'abcd-1234'], $message);
+    }
+}
