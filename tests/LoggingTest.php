@@ -18,7 +18,6 @@ use Monolog\Processor\UidProcessor;
 use Orchestra\Testbench\TestCase;
 
 /**
- * @covers \Healthengine\LaravelLogging\Formatters\LogstashFormatter
  * @covers \Healthengine\LaravelLogging\Processors\BuildTagProcessor
  * @covers \Healthengine\LaravelLogging\Processors\UrlPatternProcessor
  * @covers \Healthengine\LaravelLogging\Taps\LogstashTap
