@@ -38,10 +38,9 @@ class ServiceProvider extends BaseServiceProvider
          * Any values added to context will also end up in our logs under the `extra` key. This is
          * useful for following code across services for a single web request.
          */
-        Context::when(
-            array_key_exists('HTTP_X_AMZN_TRACE_ID', $_SERVER),
-            fn (Repository $context) => $context->addIf('X-Amzn-Trace-Id', $_SERVER['HTTP_X_AMZN_TRACE_ID']),
-        );
+        if (array_key_exists('HTTP_X_AMZN_TRACE_ID', $_SERVER)) {
+            Context::addIf('X-Amzn-Trace-Id', $_SERVER['HTTP_X_AMZN_TRACE_ID']);
+        }
 
         // For any outgoing request, carry along the AWS trace ID for better observability across services
         Http::globalRequestMiddleware(
