@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Custom LogstashFormatter
 - Dropped support for Laravel 10
+- Dropped support for PHP 8.1
 
 ## [v4.1.0] - 2024-11-29
 
