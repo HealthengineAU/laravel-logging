@@ -24,7 +24,7 @@ class ServiceProvider extends BaseServiceProvider
             app('log')->reset();
         });
 
-        if (config('laravel-logging.enable_tracing_middleware')) {
+        if (config('laravel-logging.enable_tracing_middleware', true)) {
             $this->app->afterResolving(Kernel::class, function (Kernel $kernel) {
                 $kernel->pushMiddleware(AddAmznTraceIdToContext::class);
             });
