@@ -4,8 +4,11 @@ namespace Healthengine\LaravelLogging;
 
 use Healthengine\LaravelLogging\Middleware\AddAmznTraceIdToContext;
 use Illuminate\Foundation\Http\Kernel;
+use Illuminate\Support\Facades\Context;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Psr\Http\Message\RequestInterface;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -28,6 +31,13 @@ class ServiceProvider extends BaseServiceProvider
             $this->app->afterResolving(Kernel::class, function (Kernel $kernel) {
                 $kernel->pushMiddleware(AddAmznTraceIdToContext::class);
             });
+        }
+
+        if (config('laravel-logging.enable_tracing_propagation', true)) {
+            // For any outgoing request, carry along the AWS trace ID for better observability across services
+            Http::globalRequestMiddleware(
+                fn (RequestInterface $request) => Context::has('X-Amzn-Trace-Id') ? $request->withHeader('X-Amzn-Trace-Id', Context::get('X-Amzn-Trace-Id')) : $request
+            );
         }
     }
 
