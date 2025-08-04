@@ -6,6 +6,9 @@ use Healthengine\LaravelLogging\ServiceProvider;
 use Illuminate\Support\Facades\Context;
 use Orchestra\Testbench\TestCase;
 
+/**
+ * @covers \Healthengine\LaravelLogging\ServiceProvider
+ */
 class ServiceProviderTest extends TestCase
 {
     public function testContextMiddlewareGloballyApplied()
