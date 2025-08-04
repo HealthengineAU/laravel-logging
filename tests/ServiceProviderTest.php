@@ -10,6 +10,7 @@ use Orchestra\Testbench\TestCase;
 
 /**
  * @covers \Healthengine\LaravelLogging\ServiceProvider
+ * @covers \Healthengine\LaravelLogging\Middleware\AddAmznTraceIdToContext
  */
 class ServiceProviderTest extends TestCase
 {
