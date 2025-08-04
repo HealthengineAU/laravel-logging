@@ -23,6 +23,7 @@ use Orchestra\Testbench\TestCase;
  * @covers \Healthengine\LaravelLogging\Taps\LogstashTap
  * @covers \Healthengine\LaravelLogging\Taps\ProcessorTap
  * @covers \Healthengine\LaravelLogging\ServiceProvider
+ * @covers \Healthengine\LaravelLogging\Middleware\AddAmznTraceIdToContext
  */
 class LoggingTest extends TestCase
 {

@@ -41,6 +41,18 @@ class ServiceProviderTest extends TestCase
         $this->assertEquals(['abcd-1234'], $header);
     }
 
+    public function testHttpRequestMiddlewareWithNoContext()
+    {
+        $header = null;
+
+        Http::stub(function (Request $request) use (&$header) {
+            $header = $request->header('X-Amzn-Trace-Id');
+            return Http::response();
+        })->get('http://localhost:8000');
+
+        $this->assertEquals([], $header);
+    }
+
     protected function getPackageProviders($app)
     {
         return [ServiceProvider::class];
