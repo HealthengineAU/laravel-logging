@@ -18,12 +18,12 @@ use Monolog\Processor\UidProcessor;
 use Orchestra\Testbench\TestCase;
 
 /**
- * @covers \Healthengine\LaravelLogging\Formatters\LogstashFormatter
  * @covers \Healthengine\LaravelLogging\Processors\BuildTagProcessor
  * @covers \Healthengine\LaravelLogging\Processors\UrlPatternProcessor
  * @covers \Healthengine\LaravelLogging\Taps\LogstashTap
  * @covers \Healthengine\LaravelLogging\Taps\ProcessorTap
  * @covers \Healthengine\LaravelLogging\ServiceProvider
+ * @covers \Healthengine\LaravelLogging\Middleware\AddAmznTraceIdToContext
  */
 class LoggingTest extends TestCase
 {

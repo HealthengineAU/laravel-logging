@@ -2,8 +2,13 @@
 
 namespace Healthengine\LaravelLogging;
 
+use Healthengine\LaravelLogging\Middleware\AddAmznTraceIdToContext;
+use Illuminate\Foundation\Http\Kernel;
+use Illuminate\Support\Facades\Context;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Psr\Http\Message\RequestInterface;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -21,10 +26,24 @@ class ServiceProvider extends BaseServiceProvider
         Queue::looping(function () {
             app('log')->reset();
         });
+
+        if (config('laravel-logging.enable_tracing_middleware', true)) {
+            $this->app->afterResolving(Kernel::class, function (Kernel $kernel) {
+                $kernel->pushMiddleware(AddAmznTraceIdToContext::class);
+            });
+        }
+
+        if (config('laravel-logging.enable_tracing_propagation', true)) {
+            // For any outgoing request, carry along the AWS trace ID for better observability across services
+            Http::globalRequestMiddleware(
+                fn (RequestInterface $request) => Context::has('X-Amzn-Trace-Id') ? $request->withHeader('X-Amzn-Trace-Id', Context::get('X-Amzn-Trace-Id')) : $request
+            );
+        }
     }
 
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/laravel-logging.php', 'logging.channels');
+        $this->publishes([__DIR__ . '/../config/laravel-logging.php' => config_path('laravel-logging.php')]);
+        $this->mergeConfigFrom(__DIR__ . '/../config/laravel-logging-channels.php', 'logging.channels');
     }
 }
