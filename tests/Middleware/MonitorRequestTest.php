@@ -9,10 +9,9 @@ use Monolog\Handler\TestHandler;
 use Monolog\Level;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Healthengine\LaravelLogging\Middleware\MonitorRequest
- */
+#[CoversClass(\Healthengine\LaravelLogging\Middleware\MonitorRequest::class)]
 class MonitorRequestTest extends TestCase
 {
     public function testMiddleware()

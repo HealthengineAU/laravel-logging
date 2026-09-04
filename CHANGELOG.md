@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v6.0.0] - 2026-09-04
+
+### Added
+
+- Add support for Laravel 13
+
+### Removed
+
+- Dropped support for Laravel 11 and 12
+- Dropped support for PHP 8.2
+
 ## [v5.0.0] - 2025-07-22
 
 ### Added
@@ -133,6 +144,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed testing against PHP 7.3 in Travis CI.
 - Removed support for versions `^7.5` and `^8.0` of `phpunit/phpunit`.
 
+[v6.0.0]: https://github.com/HealthengineAU/laravel-logging/compare/v5.0.0...v6.0.0
+[v5.0.0]: https://github.com/HealthengineAU/laravel-logging/compare/v4.1.0...v5.0.0
 [v4.1.0]: https://github.com/HealthengineAU/laravel-logging/compare/v4.0.4...v4.1.0
 [v4.0.4]: https://github.com/HealthengineAU/laravel-logging/compare/v4.0.3...v4.0.4
 [v4.0.3]: https://github.com/HealthengineAU/laravel-logging/compare/v4.0.2...v4.0.3

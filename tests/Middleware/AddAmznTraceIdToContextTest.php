@@ -7,10 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Context;
 use Orchestra\Testbench\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Healthengine\LaravelLogging\Middleware\AddAmznTraceIdToContext
- */
+#[CoversClass(\Healthengine\LaravelLogging\Middleware\AddAmznTraceIdToContext::class)]
 class AddAmznTraceIdToContextTest extends TestCase
 {
     public function testNoContextAddedWithoutHeader()

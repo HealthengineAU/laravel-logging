@@ -7,11 +7,10 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Http;
 use Orchestra\Testbench\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Healthengine\LaravelLogging\ServiceProvider
- * @covers \Healthengine\LaravelLogging\Middleware\AddAmznTraceIdToContext
- */
+#[CoversClass(\Healthengine\LaravelLogging\ServiceProvider::class)]
+#[CoversClass(\Healthengine\LaravelLogging\Middleware\AddAmznTraceIdToContext::class)]
 class ServiceProviderTest extends TestCase
 {
     public function testContextMiddlewareGloballyApplied()
