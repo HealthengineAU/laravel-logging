@@ -1,17 +1,13 @@
 version: 2.1
 
 executors:
-  php81:
-    docker:
-      - image: cimg/php:8.1
-    resource_class: small
-  php82:
-    docker:
-      - image: cimg/php:8.2
-    resource_class: small
   php83:
     docker:
       - image: cimg/php:8.3
+    resource_class: small
+  php84:
+    docker:
+      - image: cimg/php:8.4
     resource_class: small
 
 jobs:
@@ -47,23 +43,10 @@ workflows:
     jobs:
       - test:
           matrix:
-            exclude:
-              - laravel_version: '11'
-                php_executor: php82
-                testbench_version: '10'
-              - laravel_version: '11'
-                php_executor: php83
-                testbench_version: '10'
-              - laravel_version: '12'
-                php_executor: php82
-                testbench_version: '9'
-              - laravel_version: '12'
-                php_executor: php83
-                testbench_version: '9'
             parameters:
-              laravel_version: ['11', '12']
-              php_executor: [php82, php83]
-              testbench_version: ['9', '10']
+              laravel_version: ['13']
+              php_executor: [php83, php84]
+              testbench_version: ['11']
       - coverage:
           requires:
             - test

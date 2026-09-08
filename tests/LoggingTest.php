@@ -2,8 +2,6 @@
 
 namespace Healthengine\LaravelLogging\Tests;
 
-use Composer\InstalledVersions;
-use Composer\Semver\Comparator;
 use Healthengine\LaravelLogging\Processors\BuildTagProcessor;
 use Healthengine\LaravelLogging\Processors\UrlPatternProcessor;
 use Healthengine\LaravelLogging\ServiceProvider;
@@ -16,15 +14,14 @@ use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Orchestra\Testbench\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Healthengine\LaravelLogging\Processors\BuildTagProcessor
- * @covers \Healthengine\LaravelLogging\Processors\UrlPatternProcessor
- * @covers \Healthengine\LaravelLogging\Taps\LogstashTap
- * @covers \Healthengine\LaravelLogging\Taps\ProcessorTap
- * @covers \Healthengine\LaravelLogging\ServiceProvider
- * @covers \Healthengine\LaravelLogging\Middleware\AddAmznTraceIdToContext
- */
+#[CoversClass(\Healthengine\LaravelLogging\Processors\BuildTagProcessor::class)]
+#[CoversClass(\Healthengine\LaravelLogging\Processors\UrlPatternProcessor::class)]
+#[CoversClass(\Healthengine\LaravelLogging\Taps\LogstashTap::class)]
+#[CoversClass(\Healthengine\LaravelLogging\Taps\ProcessorTap::class)]
+#[CoversClass(\Healthengine\LaravelLogging\ServiceProvider::class)]
+#[CoversClass(\Healthengine\LaravelLogging\Middleware\AddAmznTraceIdToContext::class)]
 class LoggingTest extends TestCase
 {
     public function testUidResetsWhenLooping()
@@ -199,20 +196,8 @@ class LoggingTest extends TestCase
         $this->assertInstanceOf(LogstashFormatter::class, $formatter);
         $this->assertEquals(storage_path('logs/laravel.log'), $handler->getUrl());
 
-        // Laravel 11 adds an extra processor into the logger which will add any global context to the logs.
-        if (
-            Comparator::greaterThanOrEqualTo(
-                InstalledVersions::getVersion('laravel/framework'),
-                '11.0.0'
-            )
-        ) {
-            $expectedCount = 8;
-        } else {
-            $expectedCount = 7;
-        }
-
         // crude assertion that the correct processors are attached
-        $this->assertCount($expectedCount, $processors);
+        $this->assertCount(8, $processors);
     }
 
     public function testLogstashStderrChannel()
@@ -226,20 +211,8 @@ class LoggingTest extends TestCase
         $this->assertInstanceOf(LogstashFormatter::class, $formatter);
         $this->assertEquals('php://stderr', $handler->getUrl());
 
-        // Laravel 11 adds an extra processor into the logger which will add any global context to the logs.
-        if (
-            Comparator::greaterThanOrEqualTo(
-                InstalledVersions::getVersion('laravel/framework'),
-                '11.0.0'
-            )
-        ) {
-            $expectedCount = 8;
-        } else {
-            $expectedCount = 7;
-        }
-
         // crude assertion that the correct processors are attached
-        $this->assertCount($expectedCount, $processors);
+        $this->assertCount(8, $processors);
     }
 
     public function testLogstashStdoutChannel()
@@ -253,20 +226,8 @@ class LoggingTest extends TestCase
         $this->assertInstanceOf(LogstashFormatter::class, $formatter);
         $this->assertEquals('php://stdout', $handler->getUrl());
 
-        // Laravel 11 adds an extra processor into the logger which will add any global context to the logs.
-        if (
-            Comparator::greaterThanOrEqualTo(
-                InstalledVersions::getVersion('laravel/framework'),
-                '11.0.0'
-            )
-        ) {
-            $expectedCount = 8;
-        } else {
-            $expectedCount = 7;
-        }
-
         // crude assertion that the correct processors are attached
-        $this->assertCount($expectedCount, $processors);
+        $this->assertCount(8, $processors);
     }
 
     protected function getPackageProviders($app)
