@@ -9,6 +9,10 @@ executors:
     docker:
       - image: cimg/php:8.4
     resource_class: small
+  php85:
+    docker:
+      - image: cimg/php:8.5
+    resource_class: small
 
 jobs:
   test:
@@ -45,7 +49,7 @@ workflows:
           matrix:
             parameters:
               laravel_version: ['13']
-              php_executor: [php83, php84]
+              php_executor: [php83, php84, php85]
               testbench_version: ['11']
       - coverage:
           requires:
