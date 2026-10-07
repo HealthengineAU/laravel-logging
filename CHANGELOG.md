@@ -150,6 +150,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed testing against PHP 7.3 in Travis CI.
 - Removed support for versions `^7.5` and `^8.0` of `phpunit/phpunit`.
 
+[v6.1.0]: https://github.com/HealthengineAU/laravel-logging/compare/v6.0.0...v6.1.0
 [v6.0.0]: https://github.com/HealthengineAU/laravel-logging/compare/v5.0.0...v6.0.0
 [v5.0.0]: https://github.com/HealthengineAU/laravel-logging/compare/v4.1.0...v5.0.0
 [v4.1.0]: https://github.com/HealthengineAU/laravel-logging/compare/v4.0.4...v4.1.0
